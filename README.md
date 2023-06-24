@@ -1,5 +1,7 @@
 # .dotfiles
 
+[Source](https://www.atlassian.com/git/tutorials/dotfiles)
+
 ## Install on a New System
 ```
 echo "alias config='/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'" >> $HOME/.zshrc

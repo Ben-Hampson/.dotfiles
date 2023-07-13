@@ -24,3 +24,5 @@ config commit -m "Add .zshrc
 config push
 ```
 
+## TO DO
+- [ ] pre-commit: Prevent secrets being committed.

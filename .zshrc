@@ -117,7 +117,9 @@ export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/b
 alias new-blog="~/code/scripts/new-blog-post.sh"
 
 # Aliases
+alias k="kubectl"
 alias bu="brew update && brew update"
+alias uu="sudo apt update && sudo apt upgrade"
 alias ls="ls -Ah --color=always"
 alias dps="docker ps"
 alias dk="docker pill"
@@ -125,6 +127,8 @@ alias de="docker exec -it"
 alias dl="docker logs"
 alias vim="nvim"
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
+alias dotenv="set -o allexport; source .env; set +o allexport"  # Load .env file
+alias ytdl="youtube-dl"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -35,6 +35,11 @@ I hope you enjoy your Neovim journey,
 
 P.S. You can delete this when you're done too. It's your config now :)
 --]]
+
+-- disable netrw because we're using nvim-tree. This should be at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 -- Set <space> as the leader key
 -- See `:help mapleader`
 --  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
@@ -63,17 +68,7 @@ vim.opt.rtp:prepend(lazypath)
 --  You can also configure plugins after the setup call,
 --    as they will be available in your neovim runtime.
 require('lazy').setup({
-  -- NOTE: First, some plugins that don't require any configuration
-
-  -- Git related plugins
-  'tpope/vim-fugitive',
-  'tpope/vim-rhubarb',
-
-  -- Detect tabstop and shiftwidth automatically
-  'tpope/vim-sleuth',
-
-  -- NOTE: This is where your plugins related to LSP can be installed.
-  --  The configuration is done below. Search for lspconfig to find it below.
+  -- Theme
   {
     'projekt0n/github-nvim-theme',
     config = function()
@@ -84,6 +79,16 @@ require('lazy').setup({
       vim.cmd('colorscheme github_dark_tritanopia')
     end
   },
+
+  -- Git related plugins
+  'tpope/vim-fugitive',
+  'tpope/vim-rhubarb',
+
+  -- Detect tabstop and shiftwidth automatically
+  'tpope/vim-sleuth',
+
+  -- NOTE: This is where your plugins related to LSP can be installed.
+  --  The configuration is done below. Search for lspconfig to find it below.
     {
     -- LSP Configuration & Plugins
     'neovim/nvim-lspconfig',
@@ -191,6 +196,25 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
+  
+  -- Debugging
+  {
+    'mfussenegger/nvim-dap',
+    'mfussenegger/nvim-dap-python', -- The debugger will automatically pick-up another virtual environment if it is activated before neovim is started.
+  },
+  { "rcarriga/nvim-dap-ui", requires = {"mfussenegger/nvim-dap"} },
+  {
+    "nvim-neotest/neotest",
+    requires = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "antoinemadec/FixCursorHold.nvim"
+    }
+  },
+  {"nvim-neotest/neotest-python"},
+
+  -- Filetree
+  {'nvim-tree/nvim-tree.lua'},
 
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
@@ -303,12 +327,13 @@ vim.keymap.set('n', '<leader>sh', require('telescope.builtin').help_tags, { desc
 vim.keymap.set('n', '<leader>sw', require('telescope.builtin').grep_string, { desc = '[S]earch current [W]ord' })
 vim.keymap.set('n', '<leader>sg', require('telescope.builtin').live_grep, { desc = '[S]earch by [G]rep' })
 vim.keymap.set('n', '<leader>sd', require('telescope.builtin').diagnostics, { desc = '[S]earch [D]iagnostics' })
+vim.keymap.set('n', '<leader>sk', require('telescope.builtin').keymaps, { desc = '[S]earch [K]eymaps' })
 
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
   -- Add languages to be installed here that you want installed for treesitter
-  ensure_installed = { 'c', 'cpp', 'go', 'lua', 'python', 'rust', 'tsx', 'typescript', 'vimdoc', 'vim' },
+  ensure_installed = { 'lua', 'python', 'vimdoc', 'vim' },
 
   -- Autoinstall languages that are not installed. Defaults to false (but you can change for yourself!)
   auto_install = false,
@@ -517,8 +542,73 @@ cmp.setup {
 -- vim: ts=2 sts=2 sw=2 et
 
 
--- [[ Ben's config! ]]
+-- Keymaps
 vim.keymap.set('i', 'jk', '<esc>', { silent = true })
 vim.keymap.set('v', 'jk', '<esc>', { silent = true })
 vim.keymap.set('n', 'H', '^', { silent = true })
 vim.keymap.set('n', 'L', '$', { silent = true })
+
+-- nvim-tree
+require("nvim-tree").setup({
+  update_focused_file = {
+    enable = true
+  }
+})
+
+-- Debugging Setup
+require('dap-python').setup('~/.virtualenvs/debugpy/bin/python') -- Uses this virtualenv containing debugpy unless it picks up a virtualenv that's already in use.
+require('dap-python').test_runner = 'pytest'
+require('dap.ext.vscode').load_launchjs(nil, {}) -- By default, load .vscode/launch.json as the project debugging configuration.
+require('dapui').setup()
+require("neotest").setup({
+  adapters = {
+    require("neotest-python")({
+      dap = { justMyCode = false },
+    }),
+  },
+})
+
+-- Run dap-ui when a debugging session is started
+local dap = require("dap")
+local dapui = require("dapui")
+dap.listeners.after.event_initialized["dapui_config"]=function()
+  dapui.open()
+end
+dap.listeners.before.event_terminated["dapui_config"]=function()
+  dapui.close()
+end
+dap.listeners.before.event_exited["dapui_config"]=function()
+  dapui.close()
+end
+
+-- Breakpoint Symbols
+vim.fn.sign_define('DapBreakpoint',{ text ='🟥', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DapStopped',{ text ='▶️', texthl ='', linehl ='', numhl =''})
+
+-- Debugging Keymaps
+-- Press CTRL + b to toggle regular breakpoint
+vim.keymap.set('n', '<C-b>', [[:lua require'dap'.toggle_breakpoint()<CR>]], {})
+-- Press CTRL + c to toggle Breakpoint with Condition
+vim.keymap.set('n', '<C-c>', [[:lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint Condition: '))<CR>]], {})
+-- Press CTRL + l to toggle Logpoint
+vim.keymap.set('n', '<C-l>', [[:lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log Point Msg: '))<CR>]], {})
+-- F5 to start / continue debugger
+vim.keymap.set('n', '<F5>', [[:lua require'dap'.continue()<CR>]], {})
+-- Pressing F10 to step over
+vim.keymap.set('n', '<F10>', [[:lua require'dap'.step_over()<CR>]], {})
+-- Pressing F11 to step into
+vim.keymap.set('n', '<F11>', [[:lua require'dap'.step_into()<CR>]], {})
+-- Pressing F12 to step out
+vim.keymap.set('n', '<F12>', [[:lua require'dap'.step_out()<CR>]], {})
+-- Press F6 to open REPL
+vim.keymap.set('n', '<F6>', [[:lua require'dap'.repl.open()<CR>]], {})
+-- Press dl to run last ran configuration (if you used f5 before it will re run it etc)
+vim.keymap.set('n', 'dl', [[:lua require'dap'.run_last()<CR>]], {})
+
+
+-- neotest Keymaps
+vim.keymap.set('n', "ts", require('neotest').summary.toggle, {desc = "[T]est [S]ummary"})
+vim.keymap.set('n', "tf", [[:lua require('neotest').run.run(vim.fn.expand('%'))<CR>]], {silent = true, desc = "[T]est [F]ile"})
+vim.keymap.set('n', "tF", [[:lua require('neotest').run.run(vim.fn.expand('%'), { strategy='dap' })<CR>]], {desc = "[T]est + Debug [F]ile"})
+vim.keymap.set('n', "tn", require('neotest').run.run, {desc = "[T]est [N]earest"})
+vim.keymap.set('n', "tN", [[:lua require('neotest').run.run({ strategy='dap' })<CR>]], { silent = true, desc = "[T]est + Debug [N]earest"})

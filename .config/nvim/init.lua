@@ -196,7 +196,7 @@ require('lazy').setup({
     },
     build = ':TSUpdate',
   },
-  
+
   -- Debugging
   {
     'mfussenegger/nvim-dap',
@@ -216,6 +216,8 @@ require('lazy').setup({
   -- Filetree
   {'nvim-tree/nvim-tree.lua'},
 
+  -- Move between tmux and nvim panes with C-h / j / k / l
+  {'christoomey/vim-tmux-navigator'},
   -- NOTE: Next Step on Your Neovim Journey: Add/Configure additional "plugins" for kickstart
   --       These are some example plugins that I've included in the kickstart repository.
   --       Uncomment any of the lines below to enable them.
@@ -235,7 +237,7 @@ require('lazy').setup({
 -- NOTE: You can change these options as you wish!
 
 -- Set highlight on search
-vim.o.hlsearch = false
+vim.o.hlsearch = true
 
 -- Make line numbers default
 vim.wo.number = true
@@ -571,14 +573,18 @@ require("neotest").setup({
 -- Run dap-ui when a debugging session is started
 local dap = require("dap")
 local dapui = require("dapui")
+local nvim_tree_api = require("nvim-tree.api")
 dap.listeners.after.event_initialized["dapui_config"]=function()
   dapui.open()
+  nvim_tree_api.tree.close_in_this_tab()
 end
 dap.listeners.before.event_terminated["dapui_config"]=function()
   dapui.close()
+  nvim_tree_api.tree.open()
 end
 dap.listeners.before.event_exited["dapui_config"]=function()
   dapui.close()
+  nvim_tree_api.tree.open()
 end
 
 -- Breakpoint Symbols
@@ -603,12 +609,16 @@ vim.keymap.set('n', '<F12>', [[:lua require'dap'.step_out()<CR>]], {})
 -- Press F6 to open REPL
 vim.keymap.set('n', '<F6>', [[:lua require'dap'.repl.open()<CR>]], {})
 -- Press dl to run last ran configuration (if you used f5 before it will re run it etc)
-vim.keymap.set('n', 'dl', [[:lua require'dap'.run_last()<CR>]], {})
+vim.keymap.set('n', 'dl', [[:lua require'dap'.run_last()<CR>]], { desc = "[D]ebug [L]ast" })
 
+vim.keymap.set('n', 'dq', [[:lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>]], { desc = "[D]ebug [L]ast" })
 
 -- neotest Keymaps
-vim.keymap.set('n', "ts", require('neotest').summary.toggle, {desc = "[T]est [S]ummary"})
+vim.keymap.set('n', "ts", [[:lua require('neotest').summary.toggle]], {silent = true, desc = "[T]est [S]ummary"})
 vim.keymap.set('n', "tf", [[:lua require('neotest').run.run(vim.fn.expand('%'))<CR>]], {silent = true, desc = "[T]est [F]ile"})
-vim.keymap.set('n', "tF", [[:lua require('neotest').run.run(vim.fn.expand('%'), { strategy='dap' })<CR>]], {desc = "[T]est + Debug [F]ile"})
-vim.keymap.set('n', "tn", require('neotest').run.run, {desc = "[T]est [N]earest"})
+vim.keymap.set('n', "tF", [[:lua require('neotest').run.run(vim.fn.expand('%'), { strategy='dap' })<CR>]], {silent = true, desc = "[T]est + Debug [F]ile"}) -- Error expecting luv callback
+vim.keymap.set('n', "tn", [[:lua require('neotest').run.run]], {silent = true, desc = "[T]est [N]earest"})
 vim.keymap.set('n', "tN", [[:lua require('neotest').run.run({ strategy='dap' })<CR>]], { silent = true, desc = "[T]est + Debug [N]earest"})
+vim.keymap.set('n', "tl", [[:lua require('neotest').run.run_last()<CR>]], { silent = true, desc = "Run [L]ast Test"})
+vim.keymap.set('n', "tL", [[:lua require('neotest').run.run_last({ strategy='dap' })<CR>]], { silent = true, desc = "Debug [L]ast Test"})
+vim.keymap.set('n', "to", [[:lua require('neotest').output.open({ enter=true })<CR>]], { silent = true, desc = "[T]est [O]utput"})

@@ -25,7 +25,7 @@ Now you can commit and push changes:
 ```
 config status
 config add .zshrc
-config commit -m "Add .zshrc
+config commit -m "Add .zshrc"
 config push
 ```
 

@@ -1,0 +1,2 @@
+.dotfiles/  # Prevents 'weird recursion problems' when pulling to a new computer.
+

@@ -1,3 +1,6 @@
+# NEVER PUT ANYTHING SENSITIVE IN HERE
+# SENSITIVE DATA GOES IN .zshrc_local
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
@@ -132,3 +135,7 @@ alias ytdl="youtube-dl"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# If zsh_local.zsh exits, source it.
+[ -f "$HOME/.zshrc_local" ] && source "$HOME/.zshrc_local"
+

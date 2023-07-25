@@ -1,0 +1,9 @@
+# Put sensitive or local-specific settings in here so they won't get committed to .dotfiles
+# Examples:
+# 	- Environment variables
+# 	- Aliases that are specific to this computer
+# 	- Settings that are specific to this computer
+
+AWS_KEY=PUT_THIS_HERE_NOT_IN_.zshrc
+alias projects="cd ~/local/location/for/projects"
+

@@ -37,6 +37,6 @@ config push
 Local `.zshrc` settings go in `.zshrc_local`. This is where sensitive environment variables should go. If the `.zsh_local` is found on the system, it is automatically sourced at the end of `.zshrc`.
 
 ## TO DO
-- [ ] Script to install zsh plugins, Powerlevel10k, nerd font, and asdf
+- [x] Add git config files to keep git aliases
+- [x] Script to install zsh plugins, Powerlevel10k, nerd font, and asdf
 - [ ] pre-commit: Prevent secrets being committed.
-- [ ] Add git config files to keep git aliases

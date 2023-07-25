@@ -1,0 +1,23 @@
+[alias]
+	a = add
+        au = !git add --update && git status -s
+        aa = !git add --all && git status -s
+        b = branch
+        ca = commit --amend
+        cm = commit --message
+        co = checkout
+        d = diff
+        f = fetch
+        m = merge
+        l = log --oneline --graph
+        p = pull
+        s = status -s
+        st = stash
+        sw = switch
+[user]
+	name = Ben Hampson
+	email = email@email.com
+[init]
+	defaultBranch = main
+[credential]
+        credentialStore = cache

@@ -584,8 +584,6 @@ vim.fn.sign_define('DapStopped',{ text ='▶️', texthl ='', linehl ='', numhl 
 vim.keymap.set('n', '<C-b>', [[:lua require'dap'.toggle_breakpoint()<CR>]], {})
 -- Press CTRL + c to toggle Breakpoint with Condition
 vim.keymap.set('n', '<C-c>', [[:lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint Condition: '))<CR>]], {})
--- Press CTRL + l to toggle Logpoint
-vim.keymap.set('n', '<C-l>', [[:lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log Point Msg: '))<CR>]], {})
 -- F5 to start / continue debugger
 vim.keymap.set('n', '<F5>', [[:lua require'dap'.continue()<CR>]], {})
 -- Pressing F10 to step over

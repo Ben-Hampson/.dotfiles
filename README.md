@@ -24,5 +24,7 @@ config commit -m "Add .zshrc
 config push
 ```
 
+Local `.zshrc` settings go in `.zshrc_local`. This is where sensitive environment variables should go. If the `.zsh_local` is found on the system, it is automatically sourced at the end of `.zshrc`.
+
 ## TO DO
 - [ ] pre-commit: Prevent secrets being committed.

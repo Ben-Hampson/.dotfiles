@@ -218,6 +218,8 @@ require('lazy').setup({
 
   -- Move between tmux and nvim panes with C-h / j / k / l
   {'christoomey/vim-tmux-navigator'},
+
+  {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
 }, {})
 
 -- [[ Setting options ]]
@@ -541,7 +543,24 @@ vim.keymap.set('n', 'L', '$', { silent = true })
 -- nvim-tree
 require("nvim-tree").setup({
   update_focused_file = {
-    enable = true
+    enable = true,
+  }
+})
+
+-- bufferline
+require("bufferline").setup({
+  options={
+    diagnostics = "nvim_lsp",
+    always_show_bufferline = true,
+    separator_style = "slant",
+    offsets = {
+      {
+        filetype = "NvimTree",
+        text = "File Explorer",
+        highlight = "Directory",
+        text_align = "left",
+      },
+    },
   }
 })
 
@@ -608,3 +627,7 @@ vim.keymap.set('n', "tN", [[:lua require('neotest').run.run({ strategy='dap' })<
 vim.keymap.set('n', "tl", [[:lua require('neotest').run.run_last()<CR>]], { silent = true, desc = "Run [L]ast Test"})
 vim.keymap.set('n', "tL", [[:lua require('neotest').run.run_last({ strategy='dap' })<CR>]], { silent = true, desc = "Debug [L]ast Test"})
 vim.keymap.set('n', "to", [[:lua require('neotest').output.open({ enter=true })<CR>]], { silent = true, desc = "[T]est [O]utput"})
+
+-- Buffer Keymaps
+vim.keymap.set('n', "bn", ":bn<CR>", { silent = true, desc = "Buffer Next"})
+vim.keymap.set('n', "bp", ":bp<CR>", { silent = true, desc = "Buffer Previous"})

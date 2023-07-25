@@ -19,6 +19,11 @@ config checkout
 config config --local status.showUntrackedFiles no
 ```
 
+Run the setup script:
+```
+./.dotfiles-setup.sh
+```
+
 Start a new `zsh` shell to see the changes take effect.
 
 Now you can commit and push changes:

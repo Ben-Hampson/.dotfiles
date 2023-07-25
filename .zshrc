@@ -111,8 +111,6 @@ source $ZSH/oh-my-zsh.sh
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 export PATH="/Users/ben/.local/bin:$PATH"
- 
-. /opt/homebrew/opt/asdf/libexec/asdf.sh
 
 export PATH="$PATH:/Applications/Visual Studio Code.app/Contents/Resources/app/bin"
 

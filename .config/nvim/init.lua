@@ -631,3 +631,11 @@ vim.keymap.set('n', "to", [[:lua require('neotest').output.open({ enter=true })<
 -- Buffer Keymaps
 vim.keymap.set('n', "bn", ":bn<CR>", { silent = true, desc = "Buffer Next"})
 vim.keymap.set('n', "bp", ":bp<CR>", { silent = true, desc = "Buffer Previous"})
+vim.keymap.set('n', "bq", ":bq<CR>", { silent = true, desc = "Buffer Quit"})
+
+-- Diagnostic settings
+vim.diagnostic.config {
+  virtual_text = false,
+  signs = false,
+  underline = false,
+}

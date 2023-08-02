@@ -114,3 +114,5 @@ alias dotenv="set -o allexport; source .env; set +o allexport"  # Load .env file
 # If zsh_local.zsh exits, source it.
 [ -f "$HOME/.zshrc_local" ] && source "$HOME/.zshrc_local"
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

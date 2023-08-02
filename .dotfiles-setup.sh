@@ -5,6 +5,7 @@ sudo apt-get install build-essential
 brew install gcc
 
 brew install neovim
+brew install fzf
 
 # zsh plugins
 git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}/themes/powerlevel10k

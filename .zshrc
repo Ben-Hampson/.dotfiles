@@ -50,7 +50,7 @@ source $ZSH/oh-my-zsh.sh
 export LANG=en_GB.UTF-8
 export EDITOR='nvim'
 
-export PATH="~/.local/bin:$PATH"  # poetry
+export PATH="$PATH:$HOME/.local/bin"  # poetry
 
 # Aliases
 alias k="kubectl"

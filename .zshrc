@@ -58,7 +58,7 @@ alias bu="brew update && brew update"
 alias uu="sudo apt update && sudo apt upgrade"
 alias ls="ls -Ah --color=always"
 alias dps="docker ps"
-alias dk="docker pill"
+alias dk="docker kill"
 alias de="docker exec -it"
 alias dl="docker logs"
 alias vim="nvim"
@@ -70,6 +70,13 @@ alias dotenv="set -o allexport; source .env; set +o allexport"  # Load .env file
 
 # fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+system=$(uname)
+
+if [[ "$system" == "Darwin" ]]; then
+        source ./pomodoro-mac.sh
+fi
+
 
 # If zsh_local.zsh exits, source it.
 [ -f "$HOME/.zshrc_local" ] && source "$HOME/.zshrc_local"

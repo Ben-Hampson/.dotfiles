@@ -554,38 +554,44 @@ dap.listeners.before.event_exited["dapui_config"]=function()
 end
 
 -- Breakpoint Symbols
-vim.fn.sign_define('DapBreakpoint',{ text ='🟥', texthl ='', linehl ='', numhl =''})
-vim.fn.sign_define('DapStopped',{ text ='▶️', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DiagnosticWarn',{ text =' ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DapStoppedLine',{ text =' ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DapStopped',{ text ='󰁕 ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('BreakpointCondition',{ text =' ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('BreakpointRejected',{ text =' ', texthl ='', linehl ='', numhl =''})
+vim.fn.sign_define('DiagnosticError',{ text =' ', texthl ='', linehl ='', numhl =''})
 
 -- Debugging Keymaps
 -- Press CTRL + b to toggle regular breakpoint
-vim.keymap.set('n', '<C-b>', [[:lua require'dap'.toggle_breakpoint()<CR>]], {})
+vim.keymap.set('n', '<C-b>', require'dap'.toggle_breakpoint, {})
 -- Press CTRL + c to toggle Breakpoint with Condition
-vim.keymap.set('n', '<C-c>', [[:lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint Condition: '))<CR>]], {})
+vim.keymap.set('n', '<C-c>', function() require'dap'.set_breakpoint(vim.fn.input('Breakpoint Condition: ')) end, {})
 -- F5 to start / continue debugger
-vim.keymap.set('n', '<F5>', [[:lua require'dap'.continue()<CR>]], {})
+vim.keymap.set('n', '<F5>', require'dap'.continue, {})
 -- Pressing F10 to step over
-vim.keymap.set('n', '<F10>', [[:lua require'dap'.step_over()<CR>]], {})
+vim.keymap.set('n', '<F10>', require'dap'.step_over, {})
 -- Pressing F11 to step into
-vim.keymap.set('n', '<F11>', [[:lua require'dap'.step_into()<CR>]], {})
+vim.keymap.set('n', '<F11>', require'dap'.step_into, {})
 -- Pressing F12 to step out
-vim.keymap.set('n', '<F12>', [[:lua require'dap'.step_out()<CR>]], {})
+vim.keymap.set('n', '<F12>', require'dap'.step_out, {})
 -- Press F6 to open REPL
-vim.keymap.set('n', '<F6>', [[:lua require'dap'.repl.open()<CR>]], {})
+vim.keymap.set('n', '<F6>', require'dap'.repl.toggle, {})
 -- Press dl to run last ran configuration (if you used f5 before it will re run it etc)
-vim.keymap.set('n', 'dl', [[:lua require'dap'.run_last()<CR>]], { desc = "[D]ebug [L]ast" })
-
-vim.keymap.set('n', 'dq', [[:lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>]], { desc = "[D]ebug [L]ast" })
+vim.keymap.set('n', 'dl', require'dap'.run_last, { desc = "[D]ebug [L]ast" })
+-- Press dq to quit
+vim.keymap.set('n', 'dq', [[:lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>]], { desc = "[D]ebug [Q]uit" })
 
 -- neotest Keymaps
-vim.keymap.set('n', "ts", [[:lua require('neotest').summary.toggle]], {silent = true, desc = "[T]est [S]ummary"})
-vim.keymap.set('n', "tf", [[:lua require('neotest').run.run(vim.fn.expand('%'))<CR>]], {silent = true, desc = "[T]est [F]ile"})
-vim.keymap.set('n', "tF", [[:lua require('neotest').run.run(vim.fn.expand('%'), { strategy='dap' })<CR>]], {silent = true, desc = "[T]est + Debug [F]ile"}) -- Error expecting luv callback
-vim.keymap.set('n', "tn", [[:lua require('neotest').run.run]], {silent = true, desc = "[T]est [N]earest"})
-vim.keymap.set('n', "tN", [[:lua require('neotest').run.run({ strategy='dap' })<CR>]], { silent = true, desc = "[T]est + Debug [N]earest"})
-vim.keymap.set('n', "tl", [[:lua require('neotest').run.run_last()<CR>]], { silent = true, desc = "Run [L]ast Test"})
-vim.keymap.set('n', "tL", [[:lua require('neotest').run.run_last({ strategy='dap' })<CR>]], { silent = true, desc = "Debug [L]ast Test"})
-vim.keymap.set('n', "to", [[:lua require('neotest').output.open({ enter=true })<CR>]], { silent = true, desc = "[T]est [O]utput"})
+vim.keymap.set('n', "ts", require('neotest').summary.toggle, {silent = true, desc = "[T]est [S]ummary"})
+vim.keymap.set('n', "tf", function() require('neotest').run.run(vim.fn.expand('%')) end, {silent = true, desc = "[T]est [F]ile"})
+vim.keymap.set('n', "tF", function() require('neotest').run.run({vim.fn.expand('%'), strategy='dap' }) end, {silent = false, desc = "[T]est + Debug [F]ile"}) -- Error expecting luv callback
+vim.keymap.set('n', "tn", require('neotest').run.run, {silent = true, desc = "[T]est [N]earest"})
+vim.keymap.set('n', "tN", function() require('neotest').run.run({ strategy='dap' }) end, { silent = true, desc = "[T]est + Debug [N]earest"})
+vim.keymap.set('n', "tl", require('neotest').run.run_last, { silent = true, desc = "Run [L]ast Test"})
+vim.keymap.set('n', "tL", function() require('neotest').run.run_last({ strategy='dap' }) end, { silent = true, desc = "Debug [L]ast Test"})
+vim.keymap.set('n', "to", function() require('neotest').output.open({ enter=true }) end, { silent = true, desc = "[T]est [O]utput"})
 
 -- Buffer Keymaps
 vim.keymap.set('n', "bn", ":bn<CR>", { silent = true, desc = "Buffer Next"})

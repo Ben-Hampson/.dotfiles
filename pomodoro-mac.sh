@@ -5,14 +5,14 @@
 
 # work 90 -> Work Pomodoro for 90 minutes.
 work () {
-	timer $1m && $NOTIFICATION_APP -message 'Pomodoro'\
+	timer $1m && terminal-notifier -message 'Pomodoro'\
 		-title 'Work Timer is up! Take a break 😊'\
 		-appIcon '~/Pictures/pumpkin.png'\
 		-sound Crystal
 	}
 
 rest () {
-	timer $1m && $NOTIFICATION_APP -message 'Pomodoro'\
+	timer $1m && terminal-notifier -message 'Pomodoro'\
 		-title 'Rest Timer is up! Back to work 😊'\
 		-appIcon '~/Pictures/pumpkin.png'\
 		-sound Crystal

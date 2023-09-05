@@ -47,8 +47,8 @@ plugins=(git asdf zsh-autosuggestions zsh-syntax-highlighting)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
-export LANG=en_GB.UTF-8
-export EDITOR='nvim'
+export LANG="en_GB"
+export EDITOR="nvim"
 
 export PATH="$PATH:$HOME/.local/bin"  # poetry
 
@@ -74,7 +74,7 @@ alias dotenv="set -o allexport; source .env; set +o allexport"  # Load .env file
 system=$(uname)
 
 if [[ "$system" == "Darwin" ]]; then
-        source ./pomodoro-mac.sh
+        source ~/pomodoro-mac.sh
 fi
 
 

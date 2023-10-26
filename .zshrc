@@ -64,6 +64,9 @@ alias dl="docker logs"
 alias vim="nvim"
 alias config="/usr/bin/git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME"
 alias dotenv="set -o allexport; source .env; set +o allexport"  # Load .env file
+alias ti="terraform init"
+alias tp="terraform plan"
+alias ta="terraform apply"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

@@ -54,7 +54,7 @@ export PATH="$PATH:$HOME/.local/bin"  # poetry
 
 # Aliases
 alias k="kubectl"
-alias bu="brew update && brew update"
+alias bu="brew update && brew upgrade && brew cleanup"
 alias uu="sudo apt update && sudo apt upgrade"
 alias ls="ls -Ah --color=always"
 alias dps="docker ps"
@@ -68,6 +68,7 @@ alias tf="terraform"
 alias tfi="terraform init"
 alias tfp="terraform plan"
 alias tfa="terraform apply"
+alias tfv="terraform validate"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh

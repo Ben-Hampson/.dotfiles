@@ -20,3 +20,9 @@ window:
 live_config_reload: true
 selection:
     save_to_clipboard: true
+
+key_bindings:
+  - { key: Left,     mods: Command,     chars: "\x1bb"                       } # Skip word left
+  - { key: Right,    mods: Command,     chars: "\x1bf"                       } # Skip word right
+  - { key: Back,     mods: Alt, chars: "\x15"                        } # Delete line
+  - { key: Back,     mods: Command,     chars: "\x1b\x7f"                    } # Delete word

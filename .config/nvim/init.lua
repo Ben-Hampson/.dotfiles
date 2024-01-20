@@ -1,12 +1,12 @@
--- disable netrw because we're using nvim-tree. This should be at the very start of your init.lua
+-- Disable netrw because we're using nvim-tree. This should be at the very start of your init.lua
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 
--- Set <space> as the leader key
--- See `:help mapleader`
---  NOTE: Must happen before plugins are required (otherwise wrong leader will be used)
-vim.g.mapleader = ' '
-vim.g.maplocalleader = ' '
+-- Import modules from ./lua
+require("options")
+--  NOTE: Keymaps must be loaded before plugins are required. Otherwise wrong leader will be used.
+require("keymaps")
+-- require("testing-and-debugging")
 
 -- Install package manager
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -24,17 +24,6 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Install Plugins
 require('lazy').setup({
-  -- Theme
-  -- {
-  --   'projekt0n/github-nvim-theme',
-  --   config = function()
-  --     require('github-theme').setup({
-  --       -- ...
-  --     })
-  --
-  --     vim.cmd('colorscheme github_dark_tritanopia')
-  --   end
-  -- },
   {
     "folke/tokyonight.nvim",
     lazy = false,
@@ -126,10 +115,7 @@ require('lazy').setup({
     'lukas-reineke/indent-blankline.nvim',
     -- Enable `lukas-reineke/indent-blankline.nvim`
     -- See `:help indent_blankline.txt`
-    opts = {
-      char = '┊',
-      show_trailing_blankline_indent = false,
-    },
+    main = "ibl",
   },
 
   -- "gc" to comment visual regions/lines
@@ -186,58 +172,6 @@ require('lazy').setup({
   {'nosduco/remote-sshfs.nvim'},
 }, {})
 
--- [[ Setting options ]]
--- See `:help vim.o`
--- NOTE: You can change these options as you wish!
-
--- Set highlight on search
-vim.o.hlsearch = true
-
--- Make line numbers default
-vim.wo.number = true
-vim.wo.relativenumber = true
-
--- Enable mouse mode
-vim.o.mouse = 'a'
-
--- Sync clipboard between OS and Neovim.
---  Remove this option if you want your OS clipboard to remain independent.
---  See `:help 'clipboard'`
-vim.o.clipboard = 'unnamedplus'
-
--- Enable break indent
-vim.o.breakindent = true
-
--- Save undo history
-vim.o.undofile = true
-
--- Case-insensitive searching UNLESS \C or capital in search
-vim.o.ignorecase = true
-vim.o.smartcase = true
-
--- Keep signcolumn on by default
-vim.wo.signcolumn = 'yes'
-
--- Decrease update time
-vim.o.updatetime = 250
-vim.o.timeout = true
-vim.o.timeoutlen = 300
-
--- Set completeopt to have a better completion experience
-vim.o.completeopt = 'menuone,noselect'
-
--- NOTE: You should make sure your terminal supports this
-vim.o.termguicolors = true
-
--- [[ Basic Keymaps ]]
-
--- Keymaps for better default experience
--- See `:help vim.keymap.set()`
-vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
--- Remap for dealing with word wrap
-vim.keymap.set('n', 'k', "v:count == 0 ? 'gk' : 'k'", { expr = true, silent = true })
-vim.keymap.set('n', 'j', "v:count == 0 ? 'gj' : 'j'", { expr = true, silent = true })
 
 -- [[ Highlight on yank ]]
 -- See `:help vim.highlight.on_yank()`
@@ -493,13 +427,6 @@ cmp.setup {
 -- The line beneath this is called `modeline`. See `:help modeline`
 -- vim: ts=2 sts=2 sw=2 et
 
-
--- Keymaps
-vim.keymap.set('i', 'jk', '<esc>', { silent = true })
-vim.keymap.set('v', 'jk', '<esc>', { silent = true })
-vim.keymap.set('n', 'H', '^', { silent = true })
-vim.keymap.set('n', 'L', '$', { silent = true })
-
 -- nvim-tree
 require("nvim-tree").setup({
   update_focused_file = {
@@ -675,10 +602,6 @@ vim.keymap.set('n', "tl", require('neotest').run.run_last, { silent = true, desc
 vim.keymap.set('n', "tL", function() require('neotest').run.run_last({ strategy='dap' }) end, { silent = true, desc = "Debug [L]ast Test"})
 vim.keymap.set('n', "to", function() require('neotest').output.open({ enter=true }) end, { silent = true, desc = "[T]est [O]utput"})
 
--- Buffer Keymaps
-vim.keymap.set('n', "bn", ":bn<CR>", { silent = true, desc = "Buffer Next"})
-vim.keymap.set('n', "bp", ":bp<CR>", { silent = true, desc = "Buffer Previous"})
-vim.keymap.set('n', "bq", ":bq<CR>", { silent = true, desc = "Buffer Quit"})
 
 -- Diagnostic settings
 vim.diagnostic.config {
@@ -687,6 +610,9 @@ vim.diagnostic.config {
   underline = false,
 }
 
-require('remote-sshfs').setup({})
-require('telescope').load_extension 'remote-sshfs'
-
+-- indent-blankline configuration
+require("ibl").setup {
+    indent = {
+      char = '┊',
+    },
+}

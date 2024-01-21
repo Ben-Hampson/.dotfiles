@@ -121,7 +121,7 @@ require('lazy').setup({
   -- "gc" to comment visual regions/lines
   { 'numToStr/Comment.nvim', opts = {} },
 
-  -- Fuzzy Finder (files, lsp, etc)
+ -- Fuzzy Finder (files, lsp, etc)
   { 'nvim-telescope/telescope.nvim', branch = '0.1.x', dependencies = { 'nvim-lua/plenary.nvim' } },
 
   -- Fuzzy Finder Algorithm which requires local dependencies to be built.
@@ -170,7 +170,10 @@ require('lazy').setup({
 
   {'akinsho/bufferline.nvim', version = "*", dependencies = 'nvim-tree/nvim-web-devicons'},
   {'nosduco/remote-sshfs.nvim'},
+  {'akinsho/toggleterm.nvim', version = "*", config = true},
+  {'lewis6991/gitsigns.nvim', version = "*"},
 }, {})
+-- End of "require('lazy').setup({})"
 
 
 -- [[ Highlight on yank ]]
@@ -610,9 +613,35 @@ vim.diagnostic.config {
   underline = false,
 }
 
--- indent-blankline configuration
+-- indent-blankline settings
 require("ibl").setup {
     indent = {
       char = '┊',
     },
 }
+
+-- toggleterm settings
+require("toggleterm").setup{
+  size = 120,
+  open_mapping = [[fd]],
+  hide_numbers = true,
+  shade_filetypes = {},
+  shade_terminals = true,
+  shading_factor = 2,
+  start_in_insert = true,
+  insert_mappings = true,
+  persist_size = true,
+  direction = "float",
+  close_on_exit = false,
+  shell = vim.o.shell,
+  float_opts = {
+      border = "curved",
+      winblend = 0,
+      highlights = {
+          border = "Normal",
+          background = "Normal",
+      },
+  },
+}
+
+require('gitsigns').setup()

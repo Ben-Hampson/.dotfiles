@@ -23,3 +23,6 @@ vim.keymap.set('n', "bn", ":bn<CR>", { silent = true, desc = "Buffer Next"})
 vim.keymap.set('n', "bp", ":bp<CR>", { silent = true, desc = "Buffer Previous"})
 vim.keymap.set('n', "bq", ":bq<CR>", { silent = true, desc = "Buffer Quit"})
 
+-- NvimTree Toggle
+vim.keymap.set('n', "<C-S-e>", ":NvimTreeToggle<CR>", { silent = true, desc = "NvimTree Toggle"})
+

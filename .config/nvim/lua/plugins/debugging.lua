@@ -103,7 +103,7 @@ return
       vim.keymap.set('n', '<C-b>', dap.toggle_breakpoint, { silent = true, desc = "Debug: Toggle [B]reakpoint" })
       vim.keymap.set('n', '<C-c>', function() dap.set_breakpoint(vim.fn.input()) end,
         { desc = "Debug: Toggle [C]onditional Breakpoint" })
-      vim.keymap.set('n', '<F5>', dap.continue, { desc = "Debug: Start / Continue" }) -- F5 to start / continue debugger
+      vim.keymap.set('n', '<F5>', dap.continue, { desc = "Debug: Start / Continue" })
       vim.keymap.set('n', '<F10>', dap.step_over, { desc = "Debug: Step Over" })
       vim.keymap.set('n', '<F11>', dap.step_into, { desc = "Debug: Step Into" })
       vim.keymap.set('n', '<F12>', dap.step_out, { desc = "Debug: Step Out" })

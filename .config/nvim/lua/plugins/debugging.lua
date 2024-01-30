@@ -109,7 +109,7 @@ return
       vim.keymap.set('n', '<F12>', dap.step_out, { desc = "Debug: Step Out" })
       vim.keymap.set('n', '<F6>', dap.repl.toggle, { desc = "Debug: Toggle REPL" })
       vim.keymap.set('n', 'dl', dap.run_last, { desc = "[D]ebug [L]ast - run last debug configuration again" })
-      vim.keymap.set('n', 'dq', ":lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>",
+      vim.keymap.set('n', '<leader>dq', ":lua require'dap'.terminate()<CR>",
         { desc = "[D]ebug: [Q]uit" })
 
       -- Breakpoint Symbols

@@ -3,14 +3,85 @@ return
 {
   {
     'mfussenegger/nvim-dap',
+    dependencies = {
+      "rcarriga/nvim-dap-ui",
+      "mfussenegger/nvim-dap-python",
+    },
     config = function()
-      require('dap-python').setup('~/.virtualenvs/debugpy/bin/python') -- Uses this virtualenv containing debugpy unless it picks up a virtualenv that's already in use.
-      require('dap-python').test_runner = 'pytest'
-      require('dap.ext.vscode').load_launchjs(nil, {})                 -- By default, load .vscode/launch.json as the project debugging configuration.
-      -- require('vim-tmux-navigator').setup()
+      require("dapui").setup(
+        {
+          controls = {
+            element = "repl",
+            enabled = true,
+            icons = {
+              disconnect = "",
+              pause = "",
+              play = "",
+              run_last = "",
+              step_back = "",
+              step_into = "",
+              step_out = "",
+              step_over = "",
+              terminate = ""
+            }
+          },
+          element_mappings = {},
+          expand_lines = true,
+          floating = {
+            border = "single",
+            mappings = {
+              close = { "q", "<Esc>" }
+            }
+          },
+          force_buffers = true,
+          icons = {
+            collapsed = "",
+            current_frame = "",
+            expanded = ""
+          },
+          layouts = { {
+            elements = { {
+              id = "scopes",
+              size = 0.25
+            }, {
+              id = "breakpoints",
+              size = 0.25
+            }, {
+              id = "stacks",
+              size = 0.25
+            }, {
+              id = "watches",
+              size = 0.25
+            } },
+            position = "left",
+            size = 40
+          }, {
+            elements = { {
+              id = "repl",
+              size = 1
+            },
+            },
+            position = "bottom",
+            size = 10
+          } },
+          mappings = {
+            edit = "e",
+            expand = { "<CR>", "<2-LeftMouse>" },
+            open = "o",
+            remove = "d",
+            repl = "r",
+            toggle = "t"
+          },
+          render = {
+            indent = 1,
+            max_value_lines = 100
+          }
+        }
+      )
 
       local dap = require("dap")
       local dapui = require("dapui")
+
       local nvim_tree_api = require("nvim-tree.api")
       dap.listeners.after.event_initialized["dapui_config"] = function()
         dapui.open()
@@ -25,6 +96,9 @@ return
         nvim_tree_api.tree.open()
       end
 
+      -- By default, load .vscode/launch.json as the project debugging configuration. require('vim-tmux-navigator').setup()
+      require('dap.ext.vscode').load_launchjs(nil, {})
+
       -- Debugging Keymaps
       vim.keymap.set('n', '<C-b>', dap.toggle_breakpoint, { silent = true, desc = "Debug: Toggle [B]reakpoint" })
       vim.keymap.set('n', '<C-c>', function() dap.set_breakpoint(vim.fn.input()) end,
@@ -35,8 +109,19 @@ return
       vim.keymap.set('n', '<F12>', dap.step_out, { desc = "Debug: Step Out" })
       vim.keymap.set('n', '<F6>', dap.repl.toggle, { desc = "Debug: Toggle REPL" })
       vim.keymap.set('n', 'dl', dap.run_last, { desc = "[D]ebug [L]ast - run last debug configuration again" })
-      vim.keymap.set('n', 'dq', [[:lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>]],
+      vim.keymap.set('n', 'dq', ":lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>",
         { desc = "[D]ebug: [Q]uit" })
+
+      -- Breakpoint Symbols
+      vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('DiagnosticWarn',{ text =' ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('DapStoppedLine',{ text =' ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('DapStopped',{ text ='󰁕 ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('BreakpointCondition',{ text =' ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('BreakpointRejected',{ text =' ', texthl ='', linehl ='', numhl =''})
+      vim.fn.sign_define('DiagnosticError',{ text =' ', texthl ='', linehl ='', numhl =''})
+
     end
   },
 
@@ -52,75 +137,7 @@ return
   },
 
   {
-    'rcarriga/nvim-dap-ui',
-    config = {
-      controls = {
-        element = "repl",
-        enabled = true,
-        icons = {
-          disconnect = "",
-          pause = "",
-          play = "",
-          run_last = "",
-          step_back = "",
-          step_into = "",
-          step_out = "",
-          step_over = "",
-          terminate = ""
-        }
-      },
-      element_mappings = {},
-      expand_lines = true,
-      floating = {
-        border = "single",
-        mappings = {
-          close = { "q", "<Esc>" }
-        }
-      },
-      force_buffers = true,
-      icons = {
-        collapsed = "",
-        current_frame = "",
-        expanded = ""
-      },
-      layouts = { {
-        elements = { {
-          id = "scopes",
-          size = 0.25
-        }, {
-          id = "breakpoints",
-          size = 0.25
-        }, {
-          id = "stacks",
-          size = 0.25
-        }, {
-          id = "watches",
-          size = 0.25
-        } },
-        position = "left",
-        size = 40
-      }, {
-        elements = { {
-          id = "repl",
-          size = 1
-        },
-        },
-        position = "bottom",
-        size = 10
-      } },
-      mappings = {
-        edit = "e",
-        expand = { "<CR>", "<2-LeftMouse>" },
-        open = "o",
-        remove = "d",
-        repl = "r",
-        toggle = "t"
-      },
-      render = {
-        indent = 1,
-        max_value_lines = 100
-      }
-    }
+    'rcarriga/nvim-dap-ui'
   },
 
   {

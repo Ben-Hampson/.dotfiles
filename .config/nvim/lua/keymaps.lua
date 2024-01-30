@@ -10,7 +10,7 @@ vim.g.maplocalleader = ' '
 -- Keymaps for better default experience
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('i', 'jk', '<esc>', { silent = true })
-vim.keymap.set('v', 'jk', '<esc>', { silent = true })
+-- vim.keymap.set('v', 'jk', '<esc>', { silent = true })
 vim.keymap.set('n', 'H', '^', { silent = true })
 vim.keymap.set('n', 'L', '$', { silent = true })
 
@@ -26,5 +26,5 @@ vim.keymap.set('n', "bq", ":Bdelete<CR>", { silent = true, desc = "Buffer Quit"}
 -- NvimTree Toggle
 vim.keymap.set('n', "<C-E>", ":NvimTreeToggle<CR>", { silent = true, desc = "NvimTree Toggle"})
 
--- Remap signature_help() because we want <C-k> for moving the cursor up one window
+-- Remap because we want <C-k> for moving the cursor up one window
 vim.keymap.set('n', "<C-m>", vim.lsp.buf.signature_help, { silent = true, desc = "Signature Help"})

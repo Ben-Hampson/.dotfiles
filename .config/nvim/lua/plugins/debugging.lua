@@ -113,15 +113,14 @@ return
         { desc = "[D]ebug: [Q]uit" })
 
       -- Breakpoint Symbols
-      vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('DiagnosticWarn',{ text =' ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('DapStoppedLine',{ text =' ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('DapStopped',{ text ='󰁕 ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('BreakpointCondition',{ text =' ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('BreakpointRejected',{ text =' ', texthl ='', linehl ='', numhl =''})
-      vim.fn.sign_define('DiagnosticError',{ text =' ', texthl ='', linehl ='', numhl =''})
-
+      vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DiagnosticWarn', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DapStoppedLine', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DapStopped', { text = '󰁕 ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('BreakpointCondition', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('BreakpointRejected', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DiagnosticError', { text = ' ', texthl = '', linehl = '', numhl = '' })
     end
   },
 

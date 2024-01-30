@@ -262,108 +262,7 @@ require("bufferline").setup({
   }
 })
 
--- Debugging Setup
-require('dap-python').setup('~/.virtualenvs/debugpy/bin/python') -- Uses this virtualenv containing debugpy unless it picks up a virtualenv that's already in use.
-require('dap-python').test_runner = 'pytest'
-require('dap.ext.vscode').load_launchjs(nil, {}) -- By default, load .vscode/launch.json as the project debugging configuration.
-require('dapui').setup(
-  {
-    controls = {
-      element = "repl",
-      enabled = true,
-      icons = {
-        disconnect = "",
-        pause = "",
-        play = "",
-        run_last = "",
-        step_back = "",
-        step_into = "",
-        step_out = "",
-        step_over = "",
-        terminate = ""
-      }
-    },
-    element_mappings = {},
-    expand_lines = true,
-    floating = {
-      border = "single",
-      mappings = {
-        close = { "q", "<Esc>" }
-      }
-    },
-    force_buffers = true,
-    icons = {
-      collapsed = "",
-      current_frame = "",
-      expanded = ""
-    },
-    layouts = { {
-        elements = { {
-            id = "scopes",
-            size = 0.25
-          }, {
-            id = "breakpoints",
-            size = 0.25
-          }, {
-            id = "stacks",
-            size = 0.25
-          }, {
-            id = "watches",
-            size = 0.25
-          } },
-        position = "left",
-        size = 40
-      }, {
-        elements = { {
-            id = "repl",
-            size = 1
-          }, 
-          },
-        position = "bottom",
-        size = 10
-      } },
-    mappings = {
-      edit = "e",
-      expand = { "<CR>", "<2-LeftMouse>" },
-      open = "o",
-      remove = "d",
-      repl = "r",
-      toggle = "t"
-    },
-    render = {
-      indent = 1,
-      max_value_lines = 100
-    }
-  }
-)
-require("neotest").setup({
-  adapters = {
-    require("neotest-python")({
-      dap = { justMyCode = false },
-    }),
-  },
-})
-
-
-
--- Run dap-ui when a debugging session is started
-local dap = require("dap")
-local dapui = require("dapui")
-local nvim_tree_api = require("nvim-tree.api")
-dap.listeners.after.event_initialized["dapui_config"]=function()
-  dapui.open()
-  nvim_tree_api.tree.close_in_this_tab()
-end
-dap.listeners.before.event_terminated["dapui_config"]=function()
-  dapui.close()
-  nvim_tree_api.tree.open()
-end
-dap.listeners.before.event_exited["dapui_config"]=function()
-  dapui.close()
-  nvim_tree_api.tree.open()
-end
-
--- Breakpoint Symbols
+-- Debugging Breakpoint Symbols
 vim.fn.sign_define('DapBreakpoint',{ text =' ', texthl ='', linehl ='', numhl =''})
 vim.fn.sign_define('DiagnosticWarn',{ text =' ', texthl ='', linehl ='', numhl =''})
 vim.fn.sign_define('DapStoppedLine',{ text =' ', texthl ='', linehl ='', numhl =''})
@@ -373,39 +272,7 @@ vim.fn.sign_define('BreakpointCondition',{ text =' ', texthl ='', linehl ='',
 vim.fn.sign_define('BreakpointRejected',{ text =' ', texthl ='', linehl ='', numhl =''})
 vim.fn.sign_define('DiagnosticError',{ text =' ', texthl ='', linehl ='', numhl =''})
 
--- Debugging Keymaps
--- Press CTRL + b to toggle regular breakpoint
-vim.keymap.set('n', '<C-b>', require'dap'.toggle_breakpoint, {})
--- Press CTRL + c to toggle Breakpoint with Condition
-vim.keymap.set('n', '<C-c>', function() require'dap'.set_breakpoint(vim.fn.input('Breakpoint Condition: ')) end, {})
--- F5 to start / continue debugger
-vim.keymap.set('n', '<F5>', require'dap'.continue, {})
--- Pressing F10 to step over
-vim.keymap.set('n', '<F10>', require'dap'.step_over, {})
--- Pressing F11 to step into
-vim.keymap.set('n', '<F11>', require'dap'.step_into, {})
--- Pressing F12 to step out
-vim.keymap.set('n', '<F12>', require'dap'.step_out, {})
--- Press F6 to open REPL
-vim.keymap.set('n', '<F6>', require'dap'.repl.toggle, {})
--- Press dl to run last ran configuration (if you used f5 before it will re run it etc)
-vim.keymap.set('n', 'dl', require'dap'.run_last, { desc = "[D]ebug [L]ast" })
--- Press dq to quit
-vim.keymap.set('n', 'dq', [[:lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>]], { desc = "[D]ebug [Q]uit" })
-
--- neotest Keymaps
-vim.keymap.set('n', "ts", require('neotest').summary.toggle, {silent = true, desc = "[T]est [S]ummary"})
-vim.keymap.set('n', "tf", function() require('neotest').run.run(vim.fn.expand('%')) end, {silent = true, desc = "[T]est [F]ile"})
-vim.keymap.set('n', "tF", function() require('neotest').run.run({vim.fn.expand('%'), strategy='dap' }) end, {silent = false, desc = "[T]est + Debug [F]ile"}) -- Error expecting luv callback
-vim.keymap.set('n', "tn", require('neotest').run.run, {silent = true, desc = "[T]est [N]earest"})
-vim.keymap.set('n', "tN", function() require('neotest').run.run({ strategy='dap' }) end, { silent = true, desc = "[T]est + Debug [N]earest"})
-vim.keymap.set('n', "tl", require('neotest').run.run_last, { silent = true, desc = "Run [L]ast Test"})
-vim.keymap.set('n', "tL", function() require('neotest').run.run_last({ strategy='dap' }) end, { silent = true, desc = "Debug [L]ast Test"})
-vim.keymap.set('n', "to", function() require('neotest').output.open({ enter=true }) end, { silent = true, desc = "[T]est [O]utput"})
-
-
 require("diagnostics")
-
 require('gitsigns').setup()
 
 -- Setup neovim lua configuration

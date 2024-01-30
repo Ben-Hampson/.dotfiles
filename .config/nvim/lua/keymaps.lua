@@ -26,3 +26,5 @@ vim.keymap.set('n', "bq", ":Bdelete<CR>", { silent = true, desc = "Buffer Quit"}
 -- NvimTree Toggle
 vim.keymap.set('n', "<C-E>", ":NvimTreeToggle<CR>", { silent = true, desc = "NvimTree Toggle"})
 
+-- Remap signature_help() because we want <C-k> for moving the cursor up one window
+vim.keymap.set('n', "<C-m>", vim.lsp.buf.signature_help, { silent = true, desc = "Signature Help"})

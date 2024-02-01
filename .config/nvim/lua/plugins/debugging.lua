@@ -88,12 +88,14 @@ return
         nvim_tree_api.tree.close_in_this_tab()
       end
       dap.listeners.before.event_terminated["dapui_config"] = function()
-        dapui.close()
-        nvim_tree_api.tree.open()
+        -- When the debug sessions is terminated due to an error or because the user manually stopped it.
+        -- dapui.close()
+        -- nvim_tree_api.tree.open()
       end
       dap.listeners.before.event_exited["dapui_config"] = function()
-        dapui.close()
-        nvim_tree_api.tree.open()
+        -- When the debugee has finished running successfully.
+        -- dapui.close()
+        -- nvim_tree_api.tree.open()
       end
 
       -- By default, load .vscode/launch.json as the project debugging configuration. require('vim-tmux-navigator').setup()
@@ -109,7 +111,7 @@ return
       vim.keymap.set('n', '<F12>', dap.step_out, { desc = "Debug: Step Out" })
       vim.keymap.set('n', '<F6>', dap.repl.toggle, { desc = "Debug: Toggle REPL" })
       vim.keymap.set('n', 'dl', dap.run_last, { desc = "[D]ebug [L]ast - run last debug configuration again" })
-      vim.keymap.set('n', '<leader>dq', ":lua require'dap'.terminate()<CR>",
+      vim.keymap.set('n', '<leader>dq', ":lua require'dap'.terminate()<CR> :lua require'dapui'.close()<CR>",
         { desc = "[D]ebug: [Q]uit" })
 
       -- Breakpoint Symbols

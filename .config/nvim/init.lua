@@ -36,7 +36,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   pattern = '*',
 })
 
-
 -- [[ Configure Treesitter ]]
 -- See `:help nvim-treesitter`
 require('nvim-treesitter.configs').setup {
@@ -156,9 +155,8 @@ cmp.setup {
 -- vim: ts=2 sts=2 sw=2 et
 
 -- Theming
--- Theme setup must come before bufferline setup
-require("tokyonight").setup({style = "night"})
 vim.cmd[[colorscheme tokyonight]]
+vim.o.background = "dark"
 
 -- bufferline
 require("bufferline").setup({

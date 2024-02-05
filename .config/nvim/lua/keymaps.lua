@@ -7,6 +7,9 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 
+-- Unmaps
+vim.api.nvim_set_keymap('n', '<leader>j', '<Nop>', {noremap = true})
+
 -- Keymaps for better default experience
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
 vim.keymap.set('i', 'jk', '<esc>', { silent = true })

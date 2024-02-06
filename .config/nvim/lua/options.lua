@@ -39,3 +39,12 @@ vim.o.termguicolors = true
 --
 -- Set highlight on search
 vim.o.hlsearch = true
+
+-- Let syntax highlighting and indentation be handled by treesitter
+vim.cmd("syntax off")
+vim.cmd("filetype plugin indent off")
+
+-- Use  treesitter for folding
+vim.opt.foldmethod="expr"
+vim.opt.foldexpr="nvim_treesitter#foldexpr()"
+vim.cmd("set nofoldenable") -- Disable folding at startup.

@@ -31,6 +31,11 @@ return {
   {
     "neovim/nvim-lspconfig",
     config = function()
+      -- Enable LSP autocompletion capabilities
+      -- When you complete and use a function, it will add it to imports
+      --
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
       local lspconfig = require("lspconfig")
 
       -- Must specify LSP configs below in order for them to work.
@@ -64,12 +69,19 @@ return {
         end,
         on_init = function(client)
           client.config.settings.python.pythonPath = get_python_path(client.config.root_dir)
-        end
+        end,
+        capabilities = capabilities
       })
 
-      lspconfig.ruff_lsp.setup({})
-      lspconfig.lua_ls.setup({})
-      lspconfig.terraformls.setup({})
+      lspconfig.ruff_lsp.setup({
+        capabilities = capabilities
+      })
+      lspconfig.lua_ls.setup({
+        capabilities = capabilities
+      })
+      lspconfig.terraformls.setup({
+        capabilities = capabilities
+      })
 
       -- Global mappings.
       -- See `:help vim.diagnostic.*` for documentation on any of the below functions

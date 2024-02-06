@@ -56,15 +56,15 @@ return {
         return vim.fn.exepath('python3') or vim.fn.exepath('python') or 'python'
       end
 
-      lspconfig.pyright.setup ({
-          on_attach = function()
-              require'lsp_signature'.on_attach {
-                  hint_enable = false,
-              }
-          end,
-          on_init = function(client)
-              client.config.settings.python.pythonPath = get_python_path(client.config.root_dir)
-          end
+      lspconfig.pyright.setup({
+        on_attach = function()
+          require 'lsp_signature'.on_attach {
+            hint_enable = false,
+          }
+        end,
+        on_init = function(client)
+          client.config.settings.python.pythonPath = get_python_path(client.config.root_dir)
+        end
       })
 
       lspconfig.ruff_lsp.setup({})
@@ -121,4 +121,11 @@ return {
 
   -- Additional lua configuration, makes nvim stuff amazing!
   { "folke/neodev.nvim" },
+
+  {
+    "ray-x/lsp_signature.nvim",
+    event = "VeryLazy",
+    opts = {},
+    config = function(_, opts) require 'lsp_signature'.setup(opts) end
+  }
 }

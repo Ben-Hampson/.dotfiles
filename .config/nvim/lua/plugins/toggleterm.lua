@@ -3,7 +3,7 @@ return {
     version = "*",
     config = {
       size = 120,
-      open_mapping = [[<leader>j]],
+      open_mapping = [[fd]],
       hide_numbers = true,
       shade_filetypes = {},
       shade_terminals = true,

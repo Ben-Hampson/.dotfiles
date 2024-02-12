@@ -45,12 +45,11 @@ vim.cmd("syntax off")
 vim.cmd("filetype plugin indent off")
 
 -- Use  treesitter for folding
-vim.opt.foldmethod="expr"
-vim.opt.foldexpr="nvim_treesitter#foldexpr()"
+vim.opt.foldmethod = "expr"
+vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 vim.cmd("set nofoldenable") -- Disable folding at startup.
 
 -- Tabs
 vim.opt.expandtab = true
 vim.opt.tabstop = 4
 vim.opt.shiftwidth = 4
-

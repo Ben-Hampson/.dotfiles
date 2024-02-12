@@ -6,6 +6,7 @@ return
     dependencies = {
       "rcarriga/nvim-dap-ui",
       "mfussenegger/nvim-dap-python",
+      'theHamsta/nvim-dap-virtual-text' -- Show variable values and types inline.
     },
     config = function()
       require("dapui").setup(
@@ -123,6 +124,8 @@ return
       vim.fn.sign_define('BreakpointCondition', { text = ' ', texthl = '', linehl = '', numhl = '' })
       vim.fn.sign_define('BreakpointRejected', { text = ' ', texthl = '', linehl = '', numhl = '' })
       vim.fn.sign_define('DiagnosticError', { text = ' ', texthl = '', linehl = '', numhl = '' })
+
+      require("nvim-dap-virtual-text").setup()
     end
   },
 
@@ -172,5 +175,4 @@ return
     end
   },
   { 'nvim-neotest/neotest-python' },
-  { 'nvim-dap-virtual-text' } -- Show variable values and types inline.
 }

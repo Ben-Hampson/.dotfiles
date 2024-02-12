@@ -3,7 +3,7 @@ return {
   -- Automatically install LSPs, formatters, linters, and DAPs to stdpath for neovim
   {
     "williamboman/mason.nvim",
-    config = true
+    config = true,
   },
 
   -- Installs LSPs automatically using Mason.
@@ -100,13 +100,16 @@ return {
 
           -- Buffer local mappings.
           -- See `:help vim.lsp.*` for documentation on any of the below functions
-          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, desc = "LSP: Declaration" })
-          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = ev.buf, desc = "LSP: Definition" })
-          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition, { buffer = ev.buf, desc = "LSP: Type definition" })
-          vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = ev.buf, desc = "LSP: References" })
+          vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = ev.buf, desc = "LSP: Get to Declaration" })
+          vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = ev.buf, desc = "LSP: Go to Definition" })
+          vim.keymap.set('n', '<space>D', vim.lsp.buf.type_definition,
+            { buffer = ev.buf, desc = "LSP: Go to Type Definition" })
+          -- vim.keymap.set('n', 'gr', vim.lsp.buf.references, { buffer = ev.buf, desc = "LSP: References" })
+          vim.keymap.set('n', 'gr', "<CMD>:Telescope lsp_references theme=ivy<CR>",
+            { buffer = ev.buf, desc = "LSP: References list" })
           vim.keymap.set('n', 'gi', vim.lsp.buf.implementation, { buffer = ev.buf, desc = "LSP: Implementations" })
           vim.keymap.set('n', 'K', vim.lsp.buf.hover,
-            { buffer = ev.buf, desc = "LSP: Hover information about the symbol" })
+            { buffer = ev.buf, desc = "LSP: Hover symbol information" })
 
           vim.keymap.set('n', '<space>wa', vim.lsp.buf.add_workspace_folder,
             { buffer = ev.buf, desc = "LSP: Add workspace folder" })
@@ -124,6 +127,32 @@ return {
           end, { buffer = ev.buf, desc = "LSP: Format" })
         end,
       })
+
+      -- Format when saving buffer
+      vim.api.nvim_create_autocmd({ 'BufWritePost' }, {
+        callback = function()
+          vim.lsp.buf.format()
+        end
+      })
+
+      -- Border around vim.buf.lsp.hover
+      local _border = "single"
+
+      vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
+        vim.lsp.handlers.hover, {
+          border = _border
+        }
+      )
+
+      vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
+        vim.lsp.handlers.signature_help, {
+          border = _border
+        }
+      )
+
+      vim.diagnostic.config {
+        float = { border = _border }
+      }
     end,
   },
 

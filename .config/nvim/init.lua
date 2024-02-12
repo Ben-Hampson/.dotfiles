@@ -23,7 +23,11 @@ end
 vim.opt.rtp:prepend(lazypath)
 
 -- Install Plugins
-require('lazy').setup("plugins")
+require('lazy').setup("plugins", {
+  change_detection = {
+    notify = false,
+  },
+})
 
 -- Highlight on yank
 -- See `:help vim.highlight.on_yank()`
@@ -41,12 +45,12 @@ vim.api.nvim_create_autocmd('TextYankPost', {
 -- vim: ts=2 sts=2 sw=2 et
 
 -- Theming
-vim.cmd[[colorscheme tokyonight]]
+vim.cmd [[colorscheme tokyonight]]
 vim.o.background = "dark"
 
 -- bufferline
 require("bufferline").setup({
-  options={
+  options = {
     diagnostics = "nvim_lsp",
     always_show_bufferline = true,
     separator_style = "slant",

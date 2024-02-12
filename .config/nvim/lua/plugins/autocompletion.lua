@@ -7,6 +7,7 @@ return {
     config = function()
       local cmp = require 'cmp'
       local luasnip = require 'luasnip'
+      local lspkind = require('lspkind')
       require('luasnip.loaders.from_vscode').lazy_load()
       luasnip.config.setup {}
 
@@ -50,12 +51,34 @@ return {
           end, { 'i', 's' }),
         },
         sources = {
+          -- The order you list them here ranks the priority in the dropdown
           { name = 'nvim_lsp' },
-          { name = 'luasnip' },
+          { name = 'luasnip',  keyword_length = 3 },
+          { name = 'nvim_lua', keyword_length = 3 },
+          { name = 'path',     keyword_length = 3 },
+          { name = 'buffer',   keyword_length = 5 },
         },
         window = {
           completion = cmp.config.window.bordered(),
           documentation = cmp.config.window.bordered(),
+        },
+        formatting = {
+          fields = { "kind", "abbr", "menu" },
+          format = lspkind.cmp_format {
+            mode = 'symbol',
+            with_text = true,
+            menu = ({
+              buffer = "[Buffer]",
+              nvim_lsp = "[LSP]",
+              luasnip = "[LuaSnip]",
+              nvim_lua = "[Lua]",
+              path = "[Path]",
+            })
+          }
+        },
+        experimental = {
+          ghost_text = true,
+          native_menu = false
         }
       }
     end,
@@ -68,11 +91,21 @@ return {
       -- Adds LSP completion capabilities
       'hrsh7th/cmp-nvim-lsp',
 
+      -- Neovim lua function completions
+      'hrsh7th/cmp-nvim-lua',
+
+      -- Buffer text autocompletion
+      'hrsh7th/cmp-buffer',
+
+      -- Path autocompletion
+      'hrsh7th/cmp-path',
+
       -- friendly-snippets provides a lot of snippets via LuaSnip
       -- https://github.com/rafamadriz/friendly-snippets/wiki
       --    Wiki containing list of available snippets for each language
       --    Info on how to enable snippets for frameworks like Django and React
       'rafamadriz/friendly-snippets',
+      'onsails/lspkind.nvim',
     }
   }
 }

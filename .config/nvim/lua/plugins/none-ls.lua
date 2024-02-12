@@ -15,8 +15,6 @@ return {
 					null_ls.builtins.formatting.ruff,
 				},
 			})
-
-			vim.keymap.set("n", "<leader>ge", vim.lsp.buf.format, { desc = "null-ls: Format" })
 		end,
 	},
 }

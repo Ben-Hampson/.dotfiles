@@ -52,7 +52,7 @@ return {
         },
         sources = {
           -- The order you list them here ranks the priority in the dropdown
-          { name = 'nvim_lsp' },
+          { name = 'nvim_lsp' , keyword_length = 3},
           { name = 'luasnip',  keyword_length = 3 },
           { name = 'nvim_lua', keyword_length = 3 },
           { name = 'path',     keyword_length = 3 },

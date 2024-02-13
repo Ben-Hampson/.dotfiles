@@ -104,8 +104,8 @@ return
 
       -- Debugging Keymaps
       vim.keymap.set('n', '<C-b>', dap.toggle_breakpoint, { silent = true, desc = "Debug: Toggle [B]reakpoint" })
-      vim.keymap.set('n', '<C-c>', function() dap.set_breakpoint(vim.fn.input()) end,
-        { desc = "Debug: Toggle [C]onditional Breakpoint" })
+      vim.keymap.set('n', '<C-n>', function() dap.set_breakpoint(vim.fn.input("Breakpoint condition: ")) end,
+        { desc = "Debug: Toggle Conditional Breakpoint" })
       vim.keymap.set('n', '<F5>', dap.continue, { desc = "Debug: Start / Continue" })
       vim.keymap.set('n', '<F10>', dap.step_over, { desc = "Debug: Step Over" })
       vim.keymap.set('n', '<F11>', dap.step_into, { desc = "Debug: Step Into" })
@@ -116,14 +116,40 @@ return
         { desc = "[D]ebug: [Q]uit" })
 
       -- Breakpoint Symbols
-      vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.api.nvim_create_autocmd("ColorScheme", {
+        pattern = "*",
+        desc = "prevent colorscheme clears self-defined DAP icon colors.",
+        callback = function()
+          vim.api.nvim_set_hl(0, 'DapRed', { ctermbg = 0, fg = '#993939', bg = '#31353f' })   -- red
+          vim.api.nvim_set_hl(0, 'DapBlue', { ctermbg = 0, fg = '#61afef', bg = '#31353f' })  -- blue
+          vim.api.nvim_set_hl(0, 'DapGreen', { ctermbg = 0, fg = '#98c379', bg = '#31353f' }) -- green
+          vim.api.nvim_set_hl(0, 'DapWhite', { ctermbg = 0, fg = '#f9f9f9', bg = '#313131' }) -- white
+        end
+      })
+
+      -- DapBreakpoint = Breakpoint in place
+      vim.fn.sign_define('DapBreakpoint',
+        { text = ' ', texthl = 'DapWhite', linehl = 'DapWhite', numhl = 'DapWhite' })
+      -- DapBreakpointCondition = Conditional breakpoint in place
+      vim.fn.sign_define('DapBreakpointCondition',
+        { text = ' ', texthl = 'DapBlue', linehl = 'DapBlue', numhl = 'DapBlue' })
+      -- DapStopped = The line the debugger is currently on.
+      vim.fn.sign_define('DapStopped',
+        { text = '󰁕 ', texthl = 'DapGreen', linehl = 'DapGreen', numhl = 'DapGreen' })
+
       vim.fn.sign_define('DiagnosticWarn', { text = ' ', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapStoppedLine', { text = ' ', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapBreakpoint', { text = ' ', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('DapStopped', { text = '󰁕 ', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('BreakpointCondition', { text = ' ', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('BreakpointRejected', { text = ' ', texthl = '', linehl = '', numhl = '' })
-      vim.fn.sign_define('DiagnosticError', { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DapStoppedLine',
+        { text = ' ', texthl = '', linehl = '', numhl = '' })
+      vim.fn.sign_define('DapBreakpointRejected',
+        { text = ' ', texthl = 'DapRed', linehl = 'DapRed', numhl = 'DapRed' })
+      vim.fn.sign_define('DiagnosticError', { text = ' ', texthl = 'DapRed', linehl = 'DapRed', numhl = 'DapRed' })
+      vim.fn.sign_define('DapLogPoint', {
+        text = '',
+        texthl = 'DapBlue',
+        linehl = 'DapBlue',
+        numhl =
+        'DapBlue'
+      })
 
       require("nvim-dap-virtual-text").setup()
     end

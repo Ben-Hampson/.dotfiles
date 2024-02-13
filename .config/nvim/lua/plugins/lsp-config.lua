@@ -77,7 +77,14 @@ return {
         capabilities = capabilities
       })
       lspconfig.lua_ls.setup({
-        capabilities = capabilities
+        capabilities = capabilities,
+        settings = {
+          Lua = {
+            completion = {
+              callSnippet = "Replace"
+            }
+          }
+        }
       })
       lspconfig.terraformls.setup({
         capabilities = capabilities
